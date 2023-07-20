@@ -109,47 +109,17 @@ ApplicationWindow {
                     anchors.fill: background
                     cursorShape: Qt.PointingHandCursor
                     hoverEnabled: model.item.clickable
-                    propagateComposedEvents: false
-                    onPressed: {
-                        btnReleasedAnimation.stop();
-                        btnClickedAnimation.start();
-                    }
-
-                    onReleased: {
-                        btnClickedAnimation.stop();
-                        btnReleasedAnimation.start();
-
-                        // This should be changed to a click signal connected to the backend
+                    propagateComposedEvents: true
+             
+                    onClicked: {
                         console.log("Button clicked: " + model.item.text)
+                        treeView.toggleExpanded(row)
                     }
 
                     enabled: model.item.clickable
                     visible: model.item.clickable
                 }
-
-                PropertyAnimation {
-                    id: btnClickedAnimation
-                    target: background
-                    property: "color"
-                    to: "#8aadd8e6"
-                    duration: 100
-                }
-
-                PropertyAnimation {
-                    id: btnReleasedAnimation
-                    target: background
-                    property: "color"
-                    to: "white"
-                    duration: 100
-
-                    onRunningChanged: {
-                        if (btnReleasedAnimation.running === false)
-                            treeView.toggleExpanded(row)
-                    }
-                }
             }
         }
-
-        
     }  // TreeView
 }
