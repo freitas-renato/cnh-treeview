@@ -15,6 +15,7 @@ class TreeItemData : public QObject
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
     Q_PROPERTY(int indentation READ indentation WRITE setIndentation NOTIFY indentationChanged)
     Q_PROPERTY(QString icon READ icon WRITE setIcon NOTIFY iconChanged)
+    Q_PROPERTY(bool clickable READ clickable WRITE setClickable NOTIFY clickableChanged)
 
 public:
     explicit TreeItemData(QObject* parent = nullptr);
@@ -33,16 +34,21 @@ public:
     QString type();
     void setType(const QString& type);
 
+    bool clickable();
+    void setClickable(bool clickable);
+
 signals:
     void textChanged();
     void indentationChanged();
     void iconChanged();
+    void clickableChanged();
 
 private:
     QString m_text;
     int m_indentation;
     QString m_type;
     QString m_icon;
+    bool m_isClickable;
 
     // Hash map to map the type to an icon, if there is any.
     const QHash<QString, QString> iconMap = {

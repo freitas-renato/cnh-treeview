@@ -45,7 +45,7 @@ private:
      * @param type          Field type (used to determine the icon to display)
      * @return QVariant     The new data object
      */
-    QVariant newTreeItemData(const QString& text, int indentation, const QString& type);
+    QVariant newTreeItemData(const QString& text, int indentation, const QString& type, bool isClickable = false);
 
     /**
      * @brief Populates the model with data from content of a file.

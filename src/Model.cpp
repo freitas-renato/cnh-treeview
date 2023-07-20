@@ -109,12 +109,13 @@ QHash<int, QByteArray> Model::roleNames() const
     return m_roleNameMap;
 }
 
-QVariant Model::newTreeItemData(const QString& text, int indentation, const QString& type)
+QVariant Model::newTreeItemData(const QString& text, int indentation, const QString& type, bool isClickable)
 {
     TreeItemData* itemData = new TreeItemData(this);
     itemData->setText(text);
     itemData->setIndentation(indentation);
     itemData->setType(type);  // automatically translates to an icon
+    itemData->setClickable(isClickable);
 
     QVariant variant;
     variant.setValue(itemData); // variant takes ownership of itemData
@@ -160,8 +161,8 @@ void Model::setupData(const QStringList &lines, TreeItem *parent)
             QString type = columnStrings[0];
             QString text = columnStrings[1];
 
-            qDebug() << "type: " << type << " text: " << text;
-            
+            // qDebug() << "type: " << type << " text: " << text;
+
             // Create data item
             QVariant itemData;
             itemData = newTreeItemData(text, position, type);
@@ -191,4 +192,19 @@ void Model::setupData(const QStringList &lines, TreeItem *parent)
 
         ++number;
     }
+
+    // Remove any remaining indented parents
+    while (indentations.last() > 0 && parents.count() > 0)
+    {
+        parents.pop_back();
+        indentations.pop_back();
+    }
+
+    // Add two buttons at the end of the tree
+    QVariant itemData;
+    itemData = newTreeItemData("User Profile", 0, "category", true);
+    parents.last()->append(new TreeItem(itemData, parents.last()));
+
+    itemData = newTreeItemData("Help", 0, "category", true);
+    parents.last()->append(new TreeItem(itemData, parents.last()));
 }

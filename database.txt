@@ -22,6 +22,3 @@ category: Crop and Product Library
         plant: Starter
         seed: Wheat
 
-category: User Profile
-
-category: Help

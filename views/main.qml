@@ -55,6 +55,7 @@ ApplicationWindow {
 
             readonly property real padding: 15
             required property TreeView treeView
+            required property int hasChildren
 
             TapHandler { 
                 onTapped: {
@@ -64,10 +65,12 @@ ApplicationWindow {
 
             Rectangle {
                 id: background
-                width: label.width + indicator.width + icon.width + padding * 2
+                width: label.width + indicator.width * 2 + icon.width + padding * 2
                 height: padding * 3
                 anchors.leftMargin: padding + model.item.indentation * 10
                 anchors.left: parent.left
+                color: "white"
+                radius: 10
 
                 Row {
                     spacing: treeDelegate.padding
@@ -76,13 +79,13 @@ ApplicationWindow {
                     children: [
                         Image {
                             id: indicator
-                            visible: model.hasChildren
+                            visible: treeDelegate.hasChildren
                             source: treeView.isExpanded(row) ? "qrc:/assets/minus.png" : "qrc:/assets/plus.png"
                         },
 
                         Item {
                             id: placeholder
-                            visible: !model.hasChildren
+                            visible: !treeDelegate.hasChildren
                             width: 32
                             height: 3
                         },
@@ -99,6 +102,50 @@ ApplicationWindow {
                             anchors.verticalCenter: parent.verticalCenter
                         }
                     ]
+                }
+
+                // Only active if the item is clickable
+                MouseArea {
+                    anchors.fill: background
+                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: model.item.clickable
+                    propagateComposedEvents: false
+                    onPressed: {
+                        btnReleasedAnimation.stop();
+                        btnClickedAnimation.start();
+                    }
+
+                    onReleased: {
+                        btnClickedAnimation.stop();
+                        btnReleasedAnimation.start();
+
+                        // This should be changed to a click signal connected to the backend
+                        console.log("Button clicked: " + model.item.text)
+                    }
+
+                    enabled: model.item.clickable
+                    visible: model.item.clickable
+                }
+
+                PropertyAnimation {
+                    id: btnClickedAnimation
+                    target: background
+                    property: "color"
+                    to: "#8aadd8e6"
+                    duration: 100
+                }
+
+                PropertyAnimation {
+                    id: btnReleasedAnimation
+                    target: background
+                    property: "color"
+                    to: "white"
+                    duration: 100
+
+                    onRunningChanged: {
+                        if (btnReleasedAnimation.running === false)
+                            treeView.toggleExpanded(row)
+                    }
                 }
             }
         }

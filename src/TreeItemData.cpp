@@ -8,6 +8,7 @@ TreeItemData::TreeItemData(QObject* parent) : QObject(parent)
     m_indentation = 0;
     m_type = "";
     m_icon = "";
+    m_isClickable = false;
 }
 
 TreeItemData::TreeItemData(const TreeItemData& other)
@@ -16,6 +17,7 @@ TreeItemData::TreeItemData(const TreeItemData& other)
     m_indentation = other.m_indentation;
     m_icon = other.m_icon;
     m_type = other.m_type;
+    m_isClickable = other.m_isClickable;
 }
 
 TreeItemData::~TreeItemData()
@@ -64,4 +66,15 @@ void TreeItemData::setType(const QString& type)
 {
     m_type = type;
     setIcon(iconMap.value(type, ""));
+}
+
+bool TreeItemData::clickable()
+{
+    return m_isClickable;
+}
+
+void TreeItemData::setClickable(bool clickable)
+{
+    m_isClickable = clickable;
+    emit clickableChanged();
 }
