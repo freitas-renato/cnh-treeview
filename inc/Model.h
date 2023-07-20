@@ -12,7 +12,7 @@ public:
     enum ModelRoles
     {
         ModelRoleItem = Qt::UserRole + 1,
-        ModelRoleHasChildren
+        ModelRolesCount
     };
 
 

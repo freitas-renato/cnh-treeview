@@ -16,7 +16,6 @@ Model::Model(const QString& data, QObject* parent)
 
     // Initialize role names
     m_roleNameMap[ModelRoleItem] = "item";
-    m_roleNameMap[ModelRoleHasChildren] = "hasChildren";
 }
 
 Model::~Model()
@@ -45,9 +44,7 @@ QVariant Model::data(const QModelIndex& index, int role) const
 
     TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
 
-    if (role == ModelRoleHasChildren)
-        return item->childCount() > 0;
-    else if (role == ModelRoleItem)
+    if (role == ModelRoleItem)
         return item->data(0);
     
     return QVariant();
