@@ -1,0 +1,27 @@
+category: Grower/Farm/Field/Task
+    grower: Bob
+        farm: East
+            field: Field
+                tasks: Task
+    grower: North America
+        farm: United States
+            field: NAFTA_Field
+                tasks: Tasks
+                    task: Planting
+                    task: Seeding
+        farm: Canada
+            field: NAFTA_Canada
+                tasks: Tasks
+                    task: Seeding
+
+category: Crop and Product Library
+    products: Products
+        seed: Corn
+        product: Fertilizer
+        product: Herbicide
+        plant: Starter
+        seed: Wheat
+
+category: User Profile
+
+category: Help
